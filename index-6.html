@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Exercise Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bg: #020617; --accent: #3b82f6; --card: rgba(30, 41, 59, 0.7); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* --- Header & Sidebar --- */
+        header { padding: 20px; display: flex; justify-content: space-between; border-bottom: 1px solid #1e293b; }
+        #sidebar { 
+            position: fixed; right: -300px; top: 0; width: 300px; height: 100%; 
+            background: #0f172a; padding: 20px; transition: 0.4s; z-index: 100; border-left: 1px solid #334155;
+        }
+        #sidebar.active { right: 0; }
+
+        #chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .msg { padding: 15px; border-radius: 15px; max-width: 80%; line-height: 1.5; }
+        .user { align-self: flex-end; background: var(--accent); }
+        .bot { align-self: flex-start; background: var(--card); border: 1px solid #334155; }
+
+        .hist-item { background: #1e293b; padding: 10px; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .hist-item span { cursor: pointer; font-size: 0.8rem; flex: 1; }
+        .btn-icon { background: none; border: none; color: #94a3b8; cursor: pointer; margin-left: 8px; }
+
+       
+        .input-area { padding: 20px; display: flex; justify-content: center; gap: 10px; }
+        input { width: 70%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #1e293b; color: white; outline: none; }
+        .send-btn { padding: 12px 25px; border-radius: 10px; background: var(--accent); color: white; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span><i class="fas fa-robot"></i> GEN-EXERCISE AI</span>
+        <i class="fas fa-bars" style="cursor:pointer" onclick="toggleSidebar()"></i>
+    </header>
+
+    <div id="sidebar">
+        <div style="display:flex; justify-content: space-between; margin-bottom:20px;">
+            <h3>Historique</h3>
+            <button onclick="toggleSidebar()" style="color:white; background:none; border:none; cursor:pointer;">❌</button>
+        </div>
+        <div id="history-container"></div>
+    </div>
+
+    <div id="chat-box">
+        <div class="msg bot">Bonjour! Écrivez votre sujet pour générer un exercice.</div>
+    </div>
+
+    <div class="input-area">
+        <button onclick="clearChat()" style="background:none; border:none; color:#94a3b8; cursor:pointer;"><i class="fas fa-eraser fa-lg"></i></button>
+        <input type="text" id="user-input" placeholder="Ex: Mathématiques..." onkeypress="if(event.key==='Enter') sendMessage()">
+        <button class="send-btn" onclick="sendMessage()">Envoyer</button>
+    </div>
